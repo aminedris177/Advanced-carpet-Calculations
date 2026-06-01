@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yarn Count Converter Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Cairo',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    color:white;
+    transition:0.3s;
+}
+
+body.light{
+    background:linear-gradient(135deg,#dbeafe,#e2e8f0,#f8fafc);
+    color:#111827;
+}
+
+.container{
+    width:100%;
+    max-width:950px;
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    border-radius:25px;
+    padding:35px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title h1{
+    font-size:38px;
+    color:#38bdf8;
+}
+
+.title p{
+    margin-top:10px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.small-btn{
+    padding:10px 18px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background:#0ea5e9;
+    color:white;
+    font-weight:bold;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+@media(max-width:700px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.card{
+    background:rgba(255,255,255,0.07);
+    padding:20px;
+    border-radius:20px;
+}
+
+label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+input,select{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    margin-bottom:15px;
+}
+
+.checks{
+    display:flex;
+    gap:20px;
+    margin-top:15px;
+    flex-wrap:wrap;
+}
+
+.checks label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+button.main{
+    width:100%;
+    margin-top:30px;
+    padding:16px;
+    border:none;
+    border-radius:16px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+    background:linear-gradient(90deg,#06b6d4,#3b82f6);
+    color:white;
+}
+
+.result{
+    margin-top:30px;
+    background:rgba(255,255,255,0.08);
+    border-radius:20px;
+    padding:25px;
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:14px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+th{
+    background:rgba(255,255,255,0.08);
+    color:#38bdf8;
+}
+
+.note{
+    margin-top:20px;
+    text-align:center;
+    font-size:14px;
+    opacity:0.8;
+}
+/* =========================
+   INDUSTRIAL TABLE STYLE
+========================= */
+
+.result{
+    margin-top:30px;
+    background: linear-gradient(145deg, #0b1220, #111c2e);
+    border: 1px solid rgba(56,189,248,0.2);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow:
+        inset 0 0 20px rgba(0,0,0,0.6),
+        0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* TABLE BASE */
+.result table{
+    width:100%;
+    border-collapse: collapse;
+    font-family: 'Cairo', sans-serif;
+}
+
+/* HEADER */
+.result table th{
+    padding: 14px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: linear-gradient(90deg, #0ea5e9, #2563eb);
+    color: white;
+    border: none;
+}
+
+/* CELLS */
+.result table td{
+    padding: 14px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #e2e8f0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ROW HOVER (industrial glow) */
+.result table tr:hover td{
+    background: rgba(56,189,248,0.08);
+    box-shadow: inset 0 0 10px rgba(56,189,248,0.2);
+}
+
+/* LEFT COLUMN (SYSTEM NAME) */
+.result table td:first-child{
+    color: #38bdf8;
+    font-weight: 700;
+    text-align: left;
+}
+
+/* NUMBERS LOOK MORE "MACHINE DISPLAY" */
+.result table td:last-child{
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+    color: #a5f3fc;
+}
+
+/* SCROLL FEEL (optional) */
+.result{
+    overflow-x:auto;
+}
+/*chips*/
+/* =========================
+   UNIT CHIPS (INDUSTRIAL BADGES)
+========================= */
+
+.chip{
+    display:inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow:
+        inset 0 0 10px rgba(0,0,0,0.4),
+        0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* ===== COLORS PER SYSTEM ===== */
+
+.chip.ne{
+    background: linear-gradient(145deg, #0ea5e9, #0284c7);
+    color: #fff;
+}
+
+.chip.nm{
+    background: linear-gradient(145deg, #22c55e, #16a34a);
+    color: #fff;
+}
+
+.chip.tex{
+    background: linear-gradient(145deg, #f59e0b, #d97706);
+    color: #111;
+}
+
+.chip.den{
+    background: linear-gradient(145deg, #ef4444, #b91c1c);
+    color: #fff;
+}
+
+.chip.dtex{
+    background: linear-gradient(145deg, #a855f7, #7c3aed);
+    color: #fff;
+}
+
+.chip.le{
+    background: linear-gradient(145deg, #06b6d4, #0891b2);
+    color: #fff;
+}
+
+.chip.wool{
+    background: linear-gradient(145deg, #94a3b8, #64748b);
+    color: #fff;
+}
+
+.chip.jute{
+    background: linear-gradient(145deg, #84cc16, #4d7c0f);
+    color: #fff;
+}
+
+/* hover effect */
+.chip:hover{
+    transform: scale(1.05);
+    transition: 0.2s;
+    cursor: default;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+<button class="small-btn" onclick="toggleLang()">AR / EN</button>
+<button class="small-btn" onclick="toggleMode()">Dark / Light</button>
+<button class="small-btn" onclick="copyResults()">Copy Results</button>
+</div>
+
+<div class="title">
+<h1 id="title">Yarn Count Converter</h1>
+<p id="subtitle">تحويل جميع أنظمة الخيوط</p>
+<p>Eng. Amin Edris 2026</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<label id="lblCount">القيمة / Count</label>
+<input type="number" min="0.0001" step="any" id="countValue" value="30">
+
+<label id="lblSystem">النظام / System</label>
+<select id="countSystem">
+<option value="Ne">Ne Cotton</option>
+<option value="Nm">Nm Metric</option>
+<option value="Tex">Tex</option>
+<option value="Den">Denier</option>
+<option value="Dtex">Dtex</option>
+<option value="Le">Le</option>
+<option value="Woolen">Metric Wool</option>
+<option value="Jute">Jute (lb)</option>
+</select>
+
+<label id="lblInputType">نوع الإدخال</label>
+<select id="inputType">
+<option value="single">Single Yarn Count</option>
+<option value="final">Twisted / Ply Count</option>
+</select>
+
+</div>
+
+<div class="card">
+
+<label id="lblPly">عدد الأطراف (Ply)</label>
+<input type="number" min="1" step="1" id="ply" value="1">
+
+<div class="checks">
+
+<label>
+<input type="checkbox" id="single" checked>
+<span id="txtSingle">طرف واحد - Single</span>
+</label>
+
+<label>
+<input type="checkbox" id="folded">
+<span id="txtFolded">مزوي - Ply</span>
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<button class="main" onclick="convertYarn()" id="btnConvert">تحويل</button>
+
+<div class="result">
+
+<table>
+<thead>
+<tr>
+<th>System</th>
+<th>Result</th>
+</tr>
+</thead>
+
+<tbody>
+<tr><td>Ne</td><td id="rNe">0</td></tr>
+<tr><td>Nm</td><td id="rNm">0</td></tr>
+<tr><td>Tex</td><td id="rTex">0</td></tr>
+<tr><td>Denier</td><td id="rDen">0</td></tr>
+<tr><td>Dtex</td><td id="rDtex">0</td></tr>
+<tr><td>Le</td><td id="rLe">0</td></tr>
+<tr><td>Metric Wool</td><td id="rWoolen">0</td></tr>
+<tr><td>Jute Lb</td><td id="rJute">0</td></tr>
+</tbody>
+
+</table>
+
+<div class="note" id="note">
+Professional Yarn Count Conversion System
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const singleChk = document.getElementById("single");
+const foldedChk = document.getElementById("folded");
+const plyInput = document.getElementById("ply");
+
+const countValue = document.getElementById("countValue");
+const countSystem = document.getElementById("countSystem");
+const inputType = document.getElementById("inputType");
+inputType.addEventListener("change", function(){
+
+    if(this.value === "single"){
+
+        singleChk.checked = true;
+        foldedChk.checked = false;
+
+        plyInput.value = 1;
+        plyInput.disabled = true;
+    }
+    else{
+
+        singleChk.checked = false;
+        foldedChk.checked = true;
+
+        plyInput.disabled = false;
+
+        if(parseInt(plyInput.value) < 2){
+            plyInput.value = 2;
+        }
+    }
+
+    convertYarn();
+});
+
+let isArabic = true;
+
+function safe(v){
+    return isNaN(v) || v <= 0 ? 0.0001 : v;
+}
+
+
+// =========================
+// CHECKBOX LOGIC
+// =========================
+
+singleChk.addEventListener("change", () => {
+
+    if(singleChk.checked){
+        foldedChk.checked = false;
+    }else{
+        foldedChk.checked = true;
+    }
+
+    updatePly();
+    convertYarn();
+});
+
+foldedChk.addEventListener("change", () => {
+
+    if(foldedChk.checked){
+        singleChk.checked = false;
+    }else{
+        singleChk.checked = true;
+    }
+
+    updatePly();
+    convertYarn();
+});
+
+function updatePly(){
+
+    if(singleChk.checked){
+
+        plyInput.value = 1;
+        plyInput.disabled = true;
+
+    }else{
+
+        plyInput.disabled = false;
+    }
+}
+
+updatePly();
+
+
+// =========================
+// EVENTS
+// =========================
+
+countValue.addEventListener("input", convertYarn);
+countSystem.addEventListener("change", convertYarn);
+plyInput.addEventListener("input", convertYarn);
+inputType.addEventListener("change", convertYarn);
+
+
+// =========================
+// MAIN FUNCTION
+// =========================
+
+function convertYarn(){
+
+let value = safe(parseFloat(countValue.value));
+let system = countSystem.value;
+let ply = safe(parseFloat(plyInput.value));
+
+let tex = 0;
+
+
+// =========================
+// BASE CONVERSION
+// =========================
+
+switch(system){
+
+case "Ne":
+tex = 590.5 / value;
+break;
+
+case "Nm":
+tex = 1000 / value;
+break;
+
+case "Tex":
+tex = value;
+break;
+
+case "Den":
+tex = value / 9;
+break;
+
+case "Dtex":
+tex = value / 10;
+break;
+
+case "Le":
+tex = 1653.5 / value;
+break;
+
+case "Woolen":
+tex = 1000 / value;
+break;
+
+case "Jute":
+tex = value * 34.45;
+break;
+}
+
+
+// =========================
+// PLY EFFECT
+// =========================
+
+
+// =========================
+// RESULT FORMAT
+// =========================
+
+function formatResult(val, systemType){
+
+    // إدخال سنجل
+    if(inputType.value === "single"){
+
+        return val.toFixed(2) + "/1";
+    }
+
+    // إدخال مزوى
+    else{
+
+        let folded = val.toFixed(2) + "/" + ply;
+
+        let single;
+
+        if(systemType === "indirect"){
+
+            single = (val / ply).toFixed(2) + "/1";
+
+        }else{
+
+            single = (val * ply).toFixed(2) + "/1";
+        }
+
+        return folded + " ➜ " + single ;
+    }
+}
+// =========================
+// RESULTS
+// =========================
+
+document.getElementById("rNe").innerHTML =
+formatResult(590.5 / tex, "indirect");
+
+document.getElementById("rNm").innerHTML =
+formatResult(1000 / tex, "indirect");
+
+document.getElementById("rTex").innerHTML =
+formatResult(tex, "direct");
+
+document.getElementById("rDen").innerHTML =
+formatResult(tex * 9, "direct");
+
+document.getElementById("rDtex").innerHTML =
+formatResult(tex * 10, "direct");
+
+document.getElementById("rLe").innerHTML =
+formatResult(1653.5 / tex, "indirect");
+
+document.getElementById("rWoolen").innerHTML =
+formatResult(1000 / tex, "indirect");
+
+document.getElementById("rJute").innerHTML =
+formatResult(tex / 34.45, "direct");
+// =========================
+// SAVE LAST VALUES
+// =========================
+
+localStorage.setItem("lastCount", value);
+localStorage.setItem("lastSystem", system);
+
+}
+
+
+// =========================
+// COPY RESULTS
+// =========================
+
+function copyResults(){
+
+let text =
+`Ne: ${document.getElementById("rNe").innerText}
+Nm: ${document.getElementById("rNm").innerText}
+Tex: ${document.getElementById("rTex").innerText}
+Denier: ${document.getElementById("rDen").innerText}
+Dtex: ${document.getElementById("rDtex").innerText}
+Le: ${document.getElementById("rLe").innerText}
+Wool: ${document.getElementById("rWoolen").innerText}
+Jute: ${document.getElementById("rJute").innerText}`;
+
+navigator.clipboard.writeText(text);
+
+alert("Results copied");
+}
+
+
+// =========================
+// DARK / LIGHT MODE
+// =========================
+
+function toggleMode(){
+
+document.body.classList.toggle("light");
+
+}
+
+
+// =========================
+// LANGUAGE SWITCH
+// =========================
+
+function toggleLang(){
+
+isArabic = !isArabic;
+
+if(isArabic){
+
+document.documentElement.lang = "ar";
+document.documentElement.dir = "rtl";
+
+document.getElementById("title").innerText =
+"Yarn Count Converter";
+
+document.getElementById("subtitle").innerText =
+"تحويل جميع أنظمة الخيوط";
+
+document.getElementById("lblCount").innerText =
+"القيمة / Count";
+
+document.getElementById("lblSystem").innerText =
+"النظام / System";
+
+document.getElementById("lblPly").innerText =
+"عدد الأطراف";
+
+document.getElementById("txtSingle").innerText =
+"طرف واحد - Single";
+
+document.getElementById("txtFolded").innerText =
+"مزوي - Ply";
+
+document.getElementById("btnConvert").innerText =
+"تحويل";
+
+document.getElementById("lblInputType").innerText =
+"نوع الإدخال";
+
+}else{
+
+document.documentElement.lang = "en";
+document.documentElement.dir = "ltr";
+
+document.getElementById("title").innerText =
+"Yarn Count Converter";
+
+document.getElementById("subtitle").innerText =
+"Convert All Yarn Count Systems";
+
+document.getElementById("lblCount").innerText =
+"Count Value";
+
+document.getElementById("lblSystem").innerText =
+"System";
+
+document.getElementById("lblPly").innerText =
+"Ply";
+
+document.getElementById("txtSingle").innerText =
+"Single Yarn";
+
+document.getElementById("txtFolded").innerText =
+"Folded Yarn";
+
+document.getElementById("btnConvert").innerText =
+"Convert";
+
+document.getElementById("lblInputType").innerText =
+"Input Type";
+}
+}
+
+
+// =========================
+// LOAD SAVED VALUES
+// =========================
+
+window.onload = function(){
+
+let savedCount = localStorage.getItem("lastCount");
+let savedSystem = localStorage.getItem("lastSystem");
+
+if(savedCount){
+    countValue.value = savedCount;
+}
+
+if(savedSystem){
+    countSystem.value = savedSystem;
+}
+
+convertYarn();
+
+}
+if(inputType.value === "single"){
+
+    singleChk.checked = true;
+    foldedChk.checked = false;
+
+    plyInput.value = 1;
+    plyInput.disabled = true;
+}
+else{
+
+    singleChk.checked = false;
+    foldedChk.checked = true;
+
+    plyInput.disabled = false;
+}
+
+// =========================
+// FIRST RUN
+// =========================
+
+convertYarn();
+
+</script>
+
+</body>
+</html>
